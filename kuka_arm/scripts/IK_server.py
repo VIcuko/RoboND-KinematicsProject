@@ -84,13 +84,13 @@ def handle_calculate_IK(req):
                    [ sin(q6)*cos(alpha5), cos(q6)*cos(alpha5), -sin(alpha5), -sin(alpha5)*d6],
                    [ sin(q6)*sin(alpha5), cos(q6)*sin(alpha5),  cos(alpha5),  cos(alpha5)*d6],
                    [                   0,                   0,            0,               1]])
-    T6_7 = T6_7.subs(s)
+    T5_6 = T5_6.subs(s)
 
     T6_7 = Matrix([[             cos(q7),            -sin(q7),            0,              a6],
                    [ sin(q7)*cos(alpha6), cos(q7)*cos(alpha6), -sin(alpha6), -sin(alpha6)*d7],
                    [ sin(q7)*sin(alpha6), cos(q7)*sin(alpha6),  cos(alpha6),  cos(alpha6)*d7],
                    [                   0,                   0,            0,               1]])
-    T0_1 = T0_1.subs(s)
+    T6_7 = T6_7.subs(s)
 	
 	# Create individual transformation matrices
 	#
