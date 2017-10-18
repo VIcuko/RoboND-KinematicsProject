@@ -26,10 +26,18 @@ def handle_calculate_IK(req):
         return -1
     else:
 		
-        ### Your FK code here
-        # Create symbols
-	#
-	#   
+        ### FK code here
+    # First we create simols (bare in mind the Kuka KR210 has 7 elements):
+    
+    # theta
+    q1, q2, q3, q4, q5, q6, q7 = symbols{'q1:8'}
+    # alpha
+    alpha1, alpha2, alpha3, alpha4, alpha5, alpha6, alpha7 = symbols{'alpha1:8'}
+    #distances between joints axes
+    d1, d2, d3, d4, d5, d6, d7 = symbols{'d1:8'}
+    a1, a2, a3, a4, a5, a6, a7 = symbols{'a1:8'}
+	
+
 	# Create Modified DH parameters
 	#
 	#            
