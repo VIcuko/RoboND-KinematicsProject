@@ -39,16 +39,18 @@ def handle_calculate_IK(req):
 	
 
 	# DH parameters
-    s = {alpha0: 0,     a0:   0,    d1: 0.75, 
+    s = {alpha0: 0,     a0:   0,    d1: 0.75,   q1: 0,
          alpha1: -pi/2, a1: 0.35,   d2: 0,      q2: -pi/2,  
-         alpha2: 0,     a2: 1.25,   d3: 0,
-         alpha3: -pi/2, a3: -0.054, d4: 1.5,
-         alpha4: pi/2,  a4:   0,    d5: 0
-         alpha5: -pi/2, a5:   0,    d6: 0
+         alpha2: 0,     a2: 1.25,   d3: 0,      q3: 0,
+         alpha3: -pi/2, a3: -0.054, d4: 1.5,    q4: 0,
+         alpha4: pi/2,  a4:   0,    d5: 0       q5: 0,
+         alpha5: -pi/2, a5:   0,    d6: 0       q6: 0,
          alpha6: 0,     a6:   0,    d7: 0.303   q7: 0}
 
        
 	# Modified DH Transformation matrix
+    # Create individual transformation matrices
+    # Extract rotation matrices from the transformation matrices
 	
     T0_1 = Matrix([[             cos(q1),            -sin(q1),            0,              a0],
                    [ sin(q1)*cos(alpha0), cos(q1)*cos(alpha0), -sin(alpha0), -sin(alpha0)*d1],
@@ -92,12 +94,12 @@ def handle_calculate_IK(req):
                    [                   0,                   0,            0,               1]])
     T6_7 = T6_7.subs(s)
 	
-	# Create individual transformation matrices
-	#
-	#
-	# Extract rotation matrices from the transformation matrices
-	#
-	#
+	# Now the calculations based on the ground:
+
+    T0_2
+
+
+
         ###
 
         # Initialize service response
