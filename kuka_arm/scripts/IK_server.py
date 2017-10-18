@@ -28,7 +28,7 @@ def handle_calculate_IK(req):
 		
         ### FK code here
     # First we create simols (bare in mind the Kuka KR210 has 7 elements):
-    
+
     # theta
     q1, q2, q3, q4, q5, q6, q7 = symbols{'q1:8'}
     # alpha
@@ -38,9 +38,16 @@ def handle_calculate_IK(req):
     a1, a2, a3, a4, a5, a6, a7 = symbols{'a1:8'}
 	
 
-	# Create Modified DH parameters
-	#
-	#            
+	# DH parameters
+    s = {alpha0: 0,     a0:   0,    d1: 0.75, 
+         alpha1: -pi/2, a1: 0.35,   d2: 0,      q2: -pi/2,  
+         alpha2: 0,     a2: 1.25,   d3: 0,
+         alpha3: -pi/2, a3: -0.054, d4: 1.5,
+         alpha4: pi/2,  a4:   0,    d5: 0
+         alpha5: -pi/2, a5:   0,    d6: 0
+         alpha6: 0,     a6:   0,    d7: 0.303   q7: 0}
+
+       
 	# Define Modified DH Transformation matrix
 	#
 	#
