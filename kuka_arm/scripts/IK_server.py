@@ -85,12 +85,10 @@ def handle_calculate_IK(req):
 
         R0_2 = simplify(R0_1 * R1_2)
         R0_3 = simplify(R0_2 * R2_3)
-        R0_4 = simplify(R0_3 * R3_4)
-        R0_5 = simplify(R0_4 * R4_5)
-        R0_6 = simplify(R0_5 * R5_6)
-        R0_G = simplify(R0_6 * R6_G)
-
-
+        #R0_4 = simplify(R0_3 * R3_4)
+        #R0_5 = simplify(R0_4 * R4_5)
+        #R0_6 = simplify(R0_5 * R5_6)
+        #R0_G = simplify(R0_6 * R6_G)
         ###
 
         # Initialize service response
@@ -133,7 +131,7 @@ def handle_calculate_IK(req):
         ##T_total = simplify(T0_G * R_corr)
 
         R_G = R_G * R_corr
-        R_G.subs({'r': roll, 'p': pitch, 'y': yaw})
+        R_G = R_G.subs({'r': roll, 'p': pitch, 'y': yaw})
 
         #End effector position obtained previously into matrix for further use
         G_pos = Matrix([[px],

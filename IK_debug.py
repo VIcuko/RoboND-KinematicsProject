@@ -1,6 +1,7 @@
 from sympy import *
 from time import time
 from mpmath import radians
+import math
 import tf
 
 '''
@@ -123,10 +124,10 @@ def test_code(test_case):
 
     R0_2 = simplify(R0_1 * R1_2)
     R0_3 = simplify(R0_2 * R2_3)
-    R0_4 = simplify(R0_3 * R3_4)
-    R0_5 = simplify(R0_4 * R4_5)
-    R0_6 = simplify(R0_5 * R5_6)
-    R0_G = simplify(R0_6 * R6_G)
+    #R0_4 = simplify(R0_3 * R3_4)
+    #R0_5 = simplify(R0_4 * R4_5)
+    #R0_6 = simplify(R0_5 * R5_6)
+    #R0_G = simplify(R0_6 * R6_G)
 
     ###
 
@@ -170,7 +171,7 @@ def test_code(test_case):
     ##T_total = simplify(T0_G * R_corr)
 
     R_G = R_G * R_corr
-    R_G.subs({'r': roll, 'p': pitch, 'y': yaw})
+    R_G = R_G.subs({'r': roll, 'p': pitch, 'y': yaw})
 
     #End effector position obtained previously into matrix for further use
     G_pos = Matrix([[px],
@@ -178,7 +179,6 @@ def test_code(test_case):
                     [pz]])
     #Wrist position 
     W_pos = G_pos - 0.303 * R_G[:,2]
-
     # Calculate joint angles using Geometric IK method
     
     theta1 = atan2(W_pos[1],W_pos[2])
@@ -233,9 +233,12 @@ def test_code(test_case):
 
     # Find WC error
     if not(sum(your_wc)==3):
+        print ("your_wc:",your_wc)
+        print ("test_case:",test_case)
         wc_x_e = abs(your_wc[0]-test_case[1][0])
         wc_y_e = abs(your_wc[1]-test_case[1][1])
         wc_z_e = abs(your_wc[2]-test_case[1][2])
+
         wc_offset = sqrt(wc_x_e**2 + wc_y_e**2 + wc_z_e**2)
         print ("\nWrist error for x position is: %04.8f" % wc_x_e)
         print ("Wrist error for y position is: %04.8f" % wc_y_e)
