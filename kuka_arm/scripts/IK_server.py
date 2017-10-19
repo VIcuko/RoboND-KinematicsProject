@@ -88,15 +88,20 @@ def handle_calculate_IK(req):
                    [                   0,                   0,            0,               1]])
     T5_6 = T5_6.subs(s)
 
-    T6_7 = Matrix([[             cos(q7),            -sin(q7),            0,              a6],
+    T6_G = Matrix([[             cos(q7),            -sin(q7),            0,              a6],
                    [ sin(q7)*cos(alpha6), cos(q7)*cos(alpha6), -sin(alpha6), -sin(alpha6)*d7],
                    [ sin(q7)*sin(alpha6), cos(q7)*sin(alpha6),  cos(alpha6),  cos(alpha6)*d7],
                    [                   0,                   0,            0,               1]])
-    T6_7 = T6_7.subs(s)
+    T6_G = T6_G.subs(s)
 	
-	# Now the calculations based on the ground:
+	# Now the calculations from baselink to all points:
 
-    T0_2
+    T0_2 = simplify(T0_1 * T1_2)
+    T0_3 = simplify(T0_2 * T2_3)
+    T0_4 = simplify(T0_3 * T3_4)
+    T0_5 = simplify(T0_4 * T4_5)
+    T0_6 = simplify(T0_5 * T5_6)
+    T0_G = simplify(T0_6 * T6_G)
 
 
 
