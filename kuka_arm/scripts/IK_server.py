@@ -30,12 +30,12 @@ def handle_calculate_IK(req):
     # First we create simols (bare in mind the Kuka KR210 has 7 elements):
 
         # theta
-        q1, q2, q3, q4, q5, q6, q7 = symbols{'q1:8'}
+        q1, q2, q3, q4, q5, q6, q7 = symbols('q1:8')
         # alpha
-        alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6 = symbols{'alpha0:7'}
+        alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6 = symbols('alpha0:7')
         #distances between joints axes
-        d1, d2, d3, d4, d5, d6, d7 = symbols{'d1:8'}
-        a0, a1, a2, a3, a4, a5, a6 = symbols{'a0:7'}
+        d1, d2, d3, d4, d5, d6, d7 = symbols('d1:8')
+        a0, a1, a2, a3, a4, a5, a6 = symbols('a0:7')
     	
 
     	# DH parameters
