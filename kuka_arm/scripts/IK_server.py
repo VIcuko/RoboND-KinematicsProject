@@ -53,7 +53,7 @@ def handle_calculate_IK(req):
                                 [ sin(q)*cos(alpha), cos(q)*cos(alpha), -sin(alpha), -sin(alpha)*d],
                                 [ sin(q)*sin(alpha), cos(q)*sin(alpha),  cos(alpha),  cos(alpha)*d],
                                 [                 0,                 0,           0,             1]])
-
+            return DH_Matrix
 
     # Create individual transformation matrices
     # Extract rotation matrices from the transformation matrices
