@@ -39,12 +39,12 @@ def handle_calculate_IK(req):
     	
 
     	# DH parameters
-        s = {alpha0: 0,     a0:   0,    d1: 0.75,   q1: 0,
-             alpha1: -pi/2, a1: 0.35,   d2: 0,      q2: -pi/2,  
-             alpha2: 0,     a2: 1.25,   d3: 0,      q3: 0,
-             alpha3: -pi/2, a3: -0.054, d4: 1.5,    q4: 0,
-             alpha4: pi/2,  a4:   0,    d5: 0       q5: 0,
-             alpha5: -pi/2, a5:   0,    d6: 0       q6: 0,
+        s = {alpha0: 0,     a0:   0,    d1: 0.75,   
+             alpha1: -pi/2, a1: 0.35,   d2: 0,      q2: q2 -pi/2,  
+             alpha2: 0,     a2: 1.25,   d3: 0,      
+             alpha3: -pi/2, a3: -0.054, d4: 1.5,    
+             alpha4: pi/2,  a4:   0,    d5: 0       
+             alpha5: -pi/2, a5:   0,    d6: 0       
              alpha6: 0,     a6:   0,    d7: 0.303   q7: 0}
 
        
@@ -124,13 +124,15 @@ def handle_calculate_IK(req):
      
             ### Your IK code here 
 	    # Compensate for rotation discrepancy between DH parameters and Gazebo
-	    R_y = Matrix([[ cos(pi),        0,  sin(pi)],
-                      [       0,        1,        0],
-                      [-sin(pi),        0,  cos(pi)]])
-
+	    
         R_z = Matrix([[ cos(-pi/2), -sin(-pi/2),        0],
                       [ sin(-pi/2),  cos(-pi/2),        0],
                       [ 0,              0,        1]])
+
+
+        R_y = Matrix([[ cos(pi),        0,  sin(pi)],
+                      [       0,        1,        0],
+                      [-sin(pi),        0,  cos(pi)]])
 
         R_corr = simplify(R_z * R_y)
 
