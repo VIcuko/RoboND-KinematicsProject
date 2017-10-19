@@ -29,7 +29,7 @@ def handle_calculate_IK(req):
         ### FK code here
     # First we create simols (bare in mind the Kuka KR210 has 7 elements):
 
-    # theta
+        # theta
         q1, q2, q3, q4, q5, q6, q7 = symbols{'q1:8'}
         # alpha
         alpha0, alpha1, alpha2, alpha3, alpha4, alpha5, alpha6 = symbols{'alpha0:7'}
@@ -47,8 +47,14 @@ def handle_calculate_IK(req):
              alpha5: -pi/2, a5:   0,    d6: 0       
              alpha6: 0,     a6:   0,    d7: 0.303   q7: 0}
 
-       
-	# Modified DH Transformation matrix
+    	# Modified DH Transformation matrix
+        def DH_T_Matrix (q, alpha, d, a):
+            DH_Matrix = Matrix([[             cos(q),          -sin(q),           0,             a],
+                                [ sin(q)*cos(alpha), cos(q)*cos(alpha), -sin(alpha), -sin(alpha)*d],
+                                [ sin(q)*sin(alpha), cos(q)*sin(alpha),  cos(alpha),  cos(alpha)*d],
+                                [                 0,                 0,           0,             1]])
+
+
     # Create individual transformation matrices
     # Extract rotation matrices from the transformation matrices
 	
