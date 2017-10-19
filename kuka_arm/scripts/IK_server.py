@@ -66,7 +66,7 @@ def handle_calculate_IK(req):
         T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
 	
     # Extract rotation matrices from the transformation matrices
-    
+
 	# Now the calculations from baselink to all points:
 
         T0_2 = simplify(T0_1 * T1_2)
@@ -98,14 +98,19 @@ def handle_calculate_IK(req):
             ### Your IK code here 
 	    # Compensate for rotation discrepancy between DH parameters and Gazebo
 	    
-        R_z = Matrix([[ cos(-pi/2), -sin(-pi/2),        0],
-                      [ sin(-pi/2),  cos(-pi/2),        0],
-                      [ 0,              0,        1]])
+        r, p, y = symbols('r p y')
 
+        R_z = Matrix([[ cos(y), -sin(y),   0],
+                      [ sin(y),  cos(y),   0],
+                      [ 0,                    0,   1]])
 
-        R_y = Matrix([[ cos(pi),        0,  sin(pi)],
-                      [       0,        1,        0],
-                      [-sin(pi),        0,  cos(pi)]])
+        R_y = Matrix([[ cos(p),    0,  sin(p)],
+                      [       0,    1,        0],
+                      [-sin(p),    0,  cos(p)]])
+
+        R_x = Matrix([[ 1,          0,        0],
+                      [ 0,    cos(r), -sin(r)],
+                      [ 0,    sin(r),  cos(r)]])
 
         R_corr = simplify(R_z * R_y)
 
