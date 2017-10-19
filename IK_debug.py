@@ -77,12 +77,12 @@ def test_code(test_case):
     
 
     # DH parameters
-    s = {alpha0: 0,     a0:   0,    d1: 0.75,   
+    s = {alpha0: 0,     a0:   0,    d1: 0.75,    q1: q1,
          alpha1: -pi/2, a1: 0.35,   d2: 0,       q2: q2 -pi/2,  
-         alpha2: 0,     a2: 1.25,   d3: 0,      
-         alpha3: -pi/2, a3: -0.054, d4: 1.5,    
-         alpha4: pi/2,  a4:   0,    d5: 0,       
-         alpha5: -pi/2, a5:   0,    d6: 0,      
+         alpha2: 0,     a2: 1.25,   d3: 0,       q3: q3,
+         alpha3: -pi/2, a3: -0.054, d4: 1.5,     q4: q4,
+         alpha4: pi/2,  a4:   0,    d5: 0,       q5: q5,
+         alpha5: -pi/2, a5:   0,    d6: 0,       q6: q6,
          alpha6: 0,     a6:   0,    d7: 0.303,   q7: 0}
 
     # Modified DH Transformation matrix
@@ -104,6 +104,13 @@ def test_code(test_case):
     T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
 
 # Extract rotation matrices from the transformation matrices
+    R0_1 = T0_1[0:3,0:3]
+    R1_2 = T1_2[0:3,0:3]
+    R2_3 = T2_3[0:3,0:3]
+    R3_4 = T3_4[0:3,0:3]
+    R4_5 = T4_5[0:3,0:3]
+    R5_6 = T5_6[0:3,0:3]
+    R6_G = T6_G[0:3,0:3]
 
 # Now the calculations from baselink to all points:
 
@@ -114,8 +121,32 @@ def test_code(test_case):
     T0_6 = simplify(T0_5 * T5_6)
     T0_G = simplify(T0_6 * T6_G)
 
+    R0_2 = simplify(R0_1 * R1_2)
+    R0_3 = simplify(R0_2 * R2_3)
+    R0_4 = simplify(R0_3 * R3_4)
+    R0_5 = simplify(R0_4 * R4_5)
+    R0_6 = simplify(R0_5 * R5_6)
+    R0_G = simplify(R0_6 * R6_G)
+
     ###
 
+    # Initialize service response
+    joint_trajectory_list = []
+    for x in xrange(0, len(req.poses)):
+        # IK code starts here
+        #joint_trajectory_point = JointTrajectoryPoint()
+
+    # Extract end-effector position and orientation from request
+    # px,py,pz = end-effector position
+    # roll, pitch, yaw = end-effector orientation
+        px = req.poses[x].position.x
+        py = req.poses[x].position.y
+        pz = req.poses[x].position.z
+
+        (roll, pitch, yaw) = tf.transformations.euler_from_quaternion(
+            [req.poses[x].orientation.x, req.poses[x].orientation.y,
+                req.poses[x].orientation.z, req.poses[x].orientation.w])
+ 
         ### Your IK code here 
     # Compensate for rotation discrepancy between DH parameters and Gazebo
     
@@ -164,14 +195,13 @@ def test_code(test_case):
     theta2 = pi/2 - angle_a - atan2(W_pos[2] - 0.75, sqrt(W_pos[0]*W_pos[0] + W_pos[1]*W_pos[1]) - 0.35)
     theta3 = pi/2 - (angle_b + 0.036)
 
-    #Now we extract the rotation matrix from link 0 to 3:
-    R0_3 = T0_3[0:3,0:3]
+    #Now we use the extracted rotation matrix from link 0 to 3:
     #And introduce the angle values
-    R0_3 = R0_3.evalf(subs={q1:angle1, q2:angle2, q3:angle3})
+    R0_3 = R0_3.evalf(subs={q1:theta1, q2:theta2, q3:theta3})
 
     #Now we calculate the rotation matrix from link 3 to 6 (using LU decomposition)
 
-    R3_6 = R0_3.inv("LU") * R_G
+    R3_6 = simplify (R0_3.inv("LU") * R_G)
 
     #Now we can calculate the remaining thetas:
 
@@ -195,7 +225,7 @@ def test_code(test_case):
 
     ## For error analysis please set the following variables of your WC location and EE location in the format of [x,y,z]
     your_wc = [W_pos[0],W_pos[1], W_pos[2]] # <--- Load your calculated WC values in this array
-    your_ee = [For_kin[0,3],For_kin[1,3], For_kin[2,3]] # <--- Load your calculated end effector value from your forward kinematics
+    your_ee = [For_Kin[0,3],For_Kin[1,3], For_Kin[2,3]] # <--- Load your calculated end effector value from your forward kinematics
     ########################################################################################
 
     ## Error analysis
