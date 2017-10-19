@@ -115,27 +115,43 @@ def handle_calculate_IK(req):
         R_G = R_z * R_y * R_x
         
         R_corr = simplify(R_z.subs(y, pi) * R_y.subs(p,-pi/2))
+        ##T_total = simplify(T0_G * R_corr)
 
         R_G = R_G * R_corr
         R_G.subs({'r': roll, 'p': pitch, 'y': yaw})
 
         #End effector position obtained previously into matrix for further use
-        G_position = Matrix([[px],
-                             [py],
-                             [pz]])
-
+        G_pos = Matrix([[px],
+                        [py],
+                        [pz]])
         #Wrist position 
-        W_position = G_position - d7 * R_G[:,2]
+        W_pos = G_pos - d7 * R_G[:,2]
 
-
-
-        T_total = simplify(T0_G * R_corr)
-	    
 	    # Calculate joint angles using Geometric IK method
-	    #
-	    #
-            ###
-		
+	    
+        angle1 = atan2(W_pos[1],W_pos[2])
+	    
+        #Triangle for theta2 and 3
+        side_a = d4
+        side_b = sqrt(pow((sqrt(W_pos[0]*W_pos[0] + W_pos[1]*W_pos[1]) - a1),2) + pow((W_pos[2] - d1),2))
+        side_c = a2
+        
+        angle_a = acos((side_b*side_b + side_c*side_c - side_a*side_a) / (2*side_b*side_c))
+        angle_b = acos((side_a*side_a + side_c*side_c - side_b*side_b) / (2*side_a*side_c))
+        angle_c = acos((side_a*side_a + side_b*side_b - side_c*side_c) / (2*side_a*side_b))
+
+		angle2 = pi/2 - angle_a - atan2(W_pos[2] - d1, sqrt(W_pos[0]*W_pos[0] + W_pos[1]*W_pos[1]) - a1)
+        angle3 = pi/2 - (angle_b + 0.036)
+
+        #Now we extract the rotation matrix from link 0 to 3:
+        R0_3 = T0_3[0:3,0:3]
+        #And introduce the angle values
+        R0_3 = R0_3.evalf(subs={q1:angle1, q2:angle2, q3:angle3})
+
+        #Now we calculate the rotation matrix from link 3 to 6 (using LU decomposition)
+
+        R3_6 = R0_3.inv("LU") * R_G
+
             # Populate response for the IK request
             # In the next line replace theta1,theta2...,theta6 by your joint angle variables
 	    joint_trajectory_point.positions = [theta1, theta2, theta3, theta4, theta5, theta6]
