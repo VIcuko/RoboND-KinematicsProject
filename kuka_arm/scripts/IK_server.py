@@ -66,6 +66,13 @@ def handle_calculate_IK(req):
         T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
 	
     # Extract rotation matrices from the transformation matrices
+        R0_1 = T0_1[0:3,0:3]
+        R1_2 = T0_1[0:3,0:3]
+        R2_3 = T0_1[0:3,0:3]
+        R3_4 = T0_1[0:3,0:3]
+        R4_5 = T0_1[0:3,0:3]
+        R5_6 = T0_1[0:3,0:3]
+        R6_G = T0_1[0:3,0:3]
 
 	# Now the calculations from baselink to all points:
 
