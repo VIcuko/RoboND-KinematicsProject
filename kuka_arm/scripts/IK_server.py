@@ -112,7 +112,22 @@ def handle_calculate_IK(req):
                       [ 0,    cos(r), -sin(r)],
                       [ 0,    sin(r),  cos(r)]])
 
-        R_corr = simplify(R_z * R_y)
+        R_G = R_z * R_y * R_x
+        
+        R_corr = simplify(R_z.subs(y, pi) * R_y.subs(p,-pi/2))
+
+        R_G = R_G * R_corr
+        R_G.subs({'r': roll, 'p': pitch, 'y': yaw})
+
+        #End effector position obtained previously into matrix for further use
+        G_position = Matrix([[px],
+                             [py],
+                             [pz]])
+
+        #Wrist position 
+        W_position = G_position - d7 * R_G[:,2]
+
+
 
         T_total = simplify(T0_G * R_corr)
 	    
