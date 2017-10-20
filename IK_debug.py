@@ -108,19 +108,19 @@ def test_code(test_case):
     R0_1 = T0_1[0:3,0:3]
     R1_2 = T1_2[0:3,0:3]
     R2_3 = T2_3[0:3,0:3]
-    R3_4 = T3_4[0:3,0:3]
-    R4_5 = T4_5[0:3,0:3]
-    R5_6 = T5_6[0:3,0:3]
-    R6_G = T6_G[0:3,0:3]
+    #R3_4 = T3_4[0:3,0:3]
+    #R4_5 = T4_5[0:3,0:3]
+    #R5_6 = T5_6[0:3,0:3]
+    #R6_G = T6_G[0:3,0:3]
 
 # Now the calculations from baselink to all points:
 
-    T0_2 = simplify(T0_1 * T1_2)
-    T0_3 = simplify(T0_2 * T2_3)
-    T0_4 = simplify(T0_3 * T3_4)
-    T0_5 = simplify(T0_4 * T4_5)
-    T0_6 = simplify(T0_5 * T5_6)
-    T0_G = simplify(T0_6 * T6_G)
+    #T0_2 = simplify(T0_1 * T1_2)
+    #T0_3 = simplify(T0_2 * T2_3)
+    #T0_4 = simplify(T0_3 * T3_4)
+    #T0_5 = simplify(T0_4 * T4_5)
+    #T0_6 = simplify(T0_5 * T5_6)
+    T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)
 
     R0_2 = simplify(R0_1 * R1_2)
     R0_3 = simplify(R0_2 * R2_3)
@@ -131,83 +131,79 @@ def test_code(test_case):
 
     ###
 
-    # Initialize service response
-    joint_trajectory_list = []
-    for x in xrange(0, len(req.poses)):
-        # IK code starts here
-        #joint_trajectory_point = JointTrajectoryPoint()
+    # IK code starts here
 
     # Extract end-effector position and orientation from request
     # px,py,pz = end-effector position
     # roll, pitch, yaw = end-effector orientation
-        px = req.poses[x].position.x
-        py = req.poses[x].position.y
-        pz = req.poses[x].position.z
+    px = req.poses[x].position.x
+    py = req.poses[x].position.y
+    pz = req.poses[x].position.z
 
-        (roll, pitch, yaw) = tf.transformations.euler_from_quaternion(
-            [req.poses[x].orientation.x, req.poses[x].orientation.y,
-                req.poses[x].orientation.z, req.poses[x].orientation.w])
+    (roll, pitch, yaw) = tf.transformations.euler_from_quaternion(
+        [req.poses[x].orientation.x, req.poses[x].orientation.y,
+            req.poses[x].orientation.z, req.poses[x].orientation.w])
  
         ### Your IK code here 
     # Compensate for rotation discrepancy between DH parameters and Gazebo
     
-        r, p, y = symbols('r p y')
+    r, p, y = symbols('r p y')
 
-        R_z = Matrix([[ cos(y), -sin(y),   0],
-                      [ sin(y),  cos(y),   0],
-                      [      0,       0,   1]])
+    R_z = Matrix([[ cos(y), -sin(y),   0],
+                  [ sin(y),  cos(y),   0],
+                  [      0,       0,   1]])
 
-        R_y = Matrix([[ cos(p),    0,   sin(p)],
-                      [      0,    1,        0],
-                      [-sin(p),    0,  cos(p)]])
+    R_y = Matrix([[ cos(p),    0,   sin(p)],
+                  [      0,    1,        0],
+                  [-sin(p),    0,  cos(p)]])
 
-        R_x = Matrix([[ 1,         0,       0],
-                      [ 0,    cos(r), -sin(r)],
-                      [ 0,    sin(r),  cos(r)]])
+    R_x = Matrix([[ 1,         0,       0],
+                  [ 0,    cos(r), -sin(r)],
+                  [ 0,    sin(r),  cos(r)]])
 
-        R_G = R_z * R_y * R_x
-        
-        R_corr = simplify(R_z.subs(y, pi) * R_y.subs(p,-pi/2))
-        ##T_total = simplify(T0_G * R_corr)
+    R_G = R_z * R_y * R_x
+    
+    R_corr = simplify(R_z.subs(y, pi) * R_y.subs(p,-pi/2))
+    ##T_total = simplify(T0_G * R_corr)
 
-        R_G = R_G * R_corr
-        R_G = R_G.subs({'r': roll, 'p': pitch, 'y': yaw})
+    R_G = R_G * R_corr
+    R_G = R_G.subs({'r': roll, 'p': pitch, 'y': yaw})
 
-        #End effector position obtained previously into matrix for further use
-        G_pos = Matrix([[px],
-                        [py],
-                        [pz]])
-        #Wrist position 
-        Wpos = G_pos - 0.303 * R_G[:,2]
-        # Calculate joint angles using Geometric IK method
-        
-        theta1 = atan2(Wpos[1],Wpos[2])
-        
-        #Triangle for theta2 and 3
-        side_a = 1.5
-        side_b = sqrt(pow((sqrt(Wpos[0]*Wpos[0] + Wpos[1]*Wpos[1]) - 0.35),2) + pow((Wpos[2] - 0.75),2))
-        side_c = 1.25
-        
-        angle_a = acos((side_b*side_b + side_c*side_c - side_a*side_a) / (2*side_b*side_c))
-        angle_b = acos((side_a*side_a + side_c*side_c - side_b*side_b) / (2*side_a*side_c))
-        angle_c = acos((side_a*side_a + side_b*side_b - side_c*side_c) / (2*side_a*side_b))
+    #End effector position obtained previously into matrix for further use
+    G_pos = Matrix([[px],
+                    [py],
+                    [pz]])
+    #Wrist position 
+    Wpos = G_pos - 0.303 * R_G[:,2]
+    # Calculate joint angles using Geometric IK method
+    
+    theta1 = atan2(Wpos[1],Wpos[2])
+    
+    #Triangle for theta2 and 3
+    side_a = 1.5
+    side_b = sqrt(pow((sqrt(Wpos[0]*Wpos[0] + Wpos[1]*Wpos[1]) - 0.35),2) + pow((Wpos[2] - 0.75),2))
+    side_c = 1.25
+    
+    angle_a = acos((side_b*side_b + side_c*side_c - side_a*side_a) / (2*side_b*side_c))
+    angle_b = acos((side_a*side_a + side_c*side_c - side_b*side_b) / (2*side_a*side_c))
+    angle_c = acos((side_a*side_a + side_b*side_b - side_c*side_c) / (2*side_a*side_b))
 
-        theta2 = pi/2 - angle_a - atan2(Wpos[2] - 0.75, sqrt(Wpos[0]*Wpos[0] + Wpos[1]*Wpos[1]) - 0.35)
-        theta3 = pi/2 - (angle_b + 0.036)
+    theta2 = pi/2 - angle_a - atan2(Wpos[2] - 0.75, sqrt(Wpos[0]*Wpos[0] + Wpos[1]*Wpos[1]) - 0.35)
+    theta3 = pi/2 - (angle_b + 0.036)
 
-        #Now we use the extracted rotation matrix from link 0 to 3:
-        #And introduce the angle values
-        R0_3 = R0_3.evalf(subs={q1:theta1, q2:theta2, q3:theta3})
+    #Now we use the extracted rotation matrix from link 0 to 3:
+    #And introduce the angle values
+    R0_3 = R0_3.evalf(subs={q1:theta1, q2:theta2, q3:theta3})
 
-        #Now we calculate the rotation matrix from link 3 to 6 (using LU decomposition)
+    #Now we calculate the rotation matrix from link 3 to 6 (using LU decomposition)
 
-        R3_6 = simplify (R0_3.inv("LU") * R_G)
+    R3_6 = simplify (R0_3.inv("LU") * R_G)
 
-        #Now we can calculate the remaining thetas:
+    #Now we can calculate the remaining thetas:
 
-        theta4 = atan2(R3_6[2,2], -R3_6[0,2])
-        theta5 = atan2(sqrt(R3_6[0,2]*R3_6[0,2] + R3_6[2,2]*R3_6[2,2]),R3_6[1,2])
-        theta6 = atan2(-R3_6[1,1], R3_6[1,0])
+    theta4 = atan2(R3_6[2,2], -R3_6[0,2])
+    theta5 = atan2(sqrt(R3_6[0,2]*R3_6[0,2] + R3_6[2,2]*R3_6[2,2]),R3_6[1,2])
+    theta6 = atan2(-R3_6[1,1], R3_6[1,0])
 
     ## 
     ########################################################################################
