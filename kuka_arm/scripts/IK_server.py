@@ -69,19 +69,20 @@ def handle_calculate_IK(req):
         R0_1 = T0_1[0:3,0:3]
         R1_2 = T1_2[0:3,0:3]
         R2_3 = T2_3[0:3,0:3]
-        R3_4 = T3_4[0:3,0:3]
-        R4_5 = T4_5[0:3,0:3]
-        R5_6 = T5_6[0:3,0:3]
-        R6_G = T6_G[0:3,0:3]
+        #R3_4 = T3_4[0:3,0:3]
+        #R4_5 = T4_5[0:3,0:3]
+        #R5_6 = T5_6[0:3,0:3]
+        #R6_G = T6_G[0:3,0:3]
 
 	# Now the calculations from baselink to all points:
 
-        T0_2 = simplify(T0_1 * T1_2)
-        T0_3 = simplify(T0_2 * T2_3)
-        T0_4 = simplify(T0_3 * T3_4)
-        T0_5 = simplify(T0_4 * T4_5)
-        T0_6 = simplify(T0_5 * T5_6)
-        T0_G = simplify(T0_6 * T6_G)
+        #T0_2 = simplify(T0_1 * T1_2)
+        #T0_3 = simplify(T0_2 * T2_3)
+        #T0_4 = simplify(T0_3 * T3_4)
+        #T0_5 = simplify(T0_4 * T4_5)
+        #T0_6 = simplify(T0_5 * T5_6)
+        #T0_G = simplify(T0_6 * T6_G)
+        T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)
 
         R0_2 = simplify(R0_1 * R1_2)
         R0_3 = simplify(R0_2 * R2_3)
