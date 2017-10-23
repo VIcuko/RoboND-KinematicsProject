@@ -53,7 +53,7 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 Having found these DH parameters, the individual transformation matrices would have the following structure:
 
  |  |  |  
---- | --- | --- | --- | ---
+--- | --- | --- | ---
 cos(q)           | -sin(q)          | 0| a
 sin(q)*cos(alpha)| cos(q)*cos(alpha)| -sin(alpha)| -sin(alpha)*d
 sin(q)*sin(alpha)| cos(q)*sin(alpha)|  cos(alpha)|  cos(alpha)*d
