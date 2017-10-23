@@ -155,7 +155,7 @@ def handle_calculate_IK(req):
 
     	    # Calculate joint angles using Geometric IK method
     	    
-            theta1 = atan2(Wpos[1],Wpos[2])
+            theta1 = atan2(Wpos[1],Wpos[0])
     	    
             #Triangle for theta2 and 3
             side_a = 1.5

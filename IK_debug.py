@@ -105,9 +105,9 @@ def test_code(test_case):
     T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
 
 # Extract rotation matrices from the transformation matrices
-    R0_1 = T0_1[0:3,0:3]
-    R1_2 = T1_2[0:3,0:3]
-    R2_3 = T2_3[0:3,0:3]
+    #R0_1 = T0_1[0:3,0:3]
+    #R1_2 = T1_2[0:3,0:3]
+    #R2_3 = T2_3[0:3,0:3]
     #R3_4 = T3_4[0:3,0:3]
     #R4_5 = T4_5[0:3,0:3]
     #R5_6 = T5_6[0:3,0:3]
@@ -190,10 +190,10 @@ def test_code(test_case):
         Wpos = G_pos - 0.303 * R_G[:,2]
         # Calculate joint angles using Geometric IK method
         
-        theta1 = atan2(Wpos[1],Wpos[2])
+        theta1 = atan2(Wpos[1],Wpos[0])
         
         #Triangle for theta2 and 3
-        side_a = 1.501
+        side_a = 1.5
         side_b = sqrt(pow((sqrt(Wpos[0]*Wpos[0] + Wpos[1]*Wpos[1]) - 0.35),2) + pow((Wpos[2] - 0.75),2))
         side_c = 1.25
         
