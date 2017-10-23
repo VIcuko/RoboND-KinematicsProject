@@ -127,10 +127,6 @@ def test_code(test_case):
                    [                                                               -(sin(q5)*sin(q2 + q3) - cos(q4)*cos(q5)*cos(q2 + q3))*cos(q6) - sin(q4)*sin(q6)*cos(q2 + q3),                                                                  (sin(q5)*sin(q2 + q3) - cos(q4)*cos(q5)*cos(q2 + q3))*sin(q6) - sin(q4)*cos(q6)*cos(q2 + q3),                                     -sin(q5)*cos(q4)*cos(q2 + q3) - sin(q2 + q3)*cos(q5),                                                                                 -0.303*sin(q5)*cos(q4)*cos(q2 + q3) - 0.303*sin(q2 + q3)*cos(q5) - 1.5*sin(q2 + q3) + 1.25*cos(q2) - 0.054*cos(q2 + q3) + 0.75],
                    [                                                                                                                                                           0,                                                                                                                                                             0,                                                                                        0,                                                                                                                                                                                                              1]])
     #R0_2 = simplify(R0_1 * R1_2)
-    R0_2 = Matrix([[sin(q2)*cos(q1), cos(q1)*cos(q2), -sin(q1)],
-                   [sin(q1)*sin(q2), sin(q1)*cos(q2),  cos(q1)],
-                   [        cos(q2),        -sin(q2),        0]])
-
     #R0_3 = simplify(R0_2 * R2_3)
     R0_3 = Matrix([[sin(q2 + q3)*cos(q1), cos(q1)*cos(q2 + q3), -sin(q1)],
                    [sin(q1)*sin(q2 + q3), sin(q1)*cos(q2 + q3),  cos(q1)],
