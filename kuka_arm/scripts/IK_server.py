@@ -82,10 +82,20 @@ def handle_calculate_IK(req):
         #T0_5 = simplify(T0_4 * T4_5)
         #T0_6 = simplify(T0_5 * T5_6)
         #T0_G = simplify(T0_6 * T6_G)
-        T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)
-
-        R0_2 = simplify(R0_1 * R1_2)
-        R0_3 = simplify(R0_2 * R2_3)
+        #Same as above: T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)
+        #Code to improve performance:
+        T0_G = Matrix([[((sin(q1)*sin(q4) + sin(q2 + q3)*cos(q1)*cos(q4))*cos(q5) + sin(q5)*cos(q1)*cos(q2 + q3))*cos(q6) + (sin(q1)*cos(q4) - sin(q4)*sin(q2 + q3)*cos(q1))*sin(q6), -((sin(q1)*sin(q4) + sin(q2 + q3)*cos(q1)*cos(q4))*cos(q5) + sin(q5)*cos(q1)*cos(q2 + q3))*sin(q6) + (sin(q1)*cos(q4) - sin(q4)*sin(q2 + q3)*cos(q1))*cos(q6), -(sin(q1)*sin(q4) + sin(q2 + q3)*cos(q1)*cos(q4))*sin(q5) + cos(q1)*cos(q5)*cos(q2 + q3), -0.303*sin(q1)*sin(q4)*sin(q5) + 1.25*sin(q2)*cos(q1) - 0.303*sin(q5)*sin(q2 + q3)*cos(q1)*cos(q4) - 0.054*sin(q2 + q3)*cos(q1) + 0.303*cos(q1)*cos(q5)*cos(q2 + q3) + 1.5*cos(q1)*cos(q2 + q3) + 0.35*cos(q1)],
+                       [((sin(q1)*sin(q2 + q3)*cos(q4) - sin(q4)*cos(q1))*cos(q5) + sin(q1)*sin(q5)*cos(q2 + q3))*cos(q6) - (sin(q1)*sin(q4)*sin(q2 + q3) + cos(q1)*cos(q4))*sin(q6), -((sin(q1)*sin(q2 + q3)*cos(q4) - sin(q4)*cos(q1))*cos(q5) + sin(q1)*sin(q5)*cos(q2 + q3))*sin(q6) - (sin(q1)*sin(q4)*sin(q2 + q3) + cos(q1)*cos(q4))*cos(q6), -(sin(q1)*sin(q2 + q3)*cos(q4) - sin(q4)*cos(q1))*sin(q5) + sin(q1)*cos(q5)*cos(q2 + q3),  1.25*sin(q1)*sin(q2) - 0.303*sin(q1)*sin(q5)*sin(q2 + q3)*cos(q4) - 0.054*sin(q1)*sin(q2 + q3) + 0.303*sin(q1)*cos(q5)*cos(q2 + q3) + 1.5*sin(q1)*cos(q2 + q3) + 0.35*sin(q1) + 0.303*sin(q4)*sin(q5)*cos(q1)],
+                       [                                                               -(sin(q5)*sin(q2 + q3) - cos(q4)*cos(q5)*cos(q2 + q3))*cos(q6) - sin(q4)*sin(q6)*cos(q2 + q3),                                                                  (sin(q5)*sin(q2 + q3) - cos(q4)*cos(q5)*cos(q2 + q3))*sin(q6) - sin(q4)*cos(q6)*cos(q2 + q3),                                     -sin(q5)*cos(q4)*cos(q2 + q3) - sin(q2 + q3)*cos(q5),                                                                                 -0.303*sin(q5)*cos(q4)*cos(q2 + q3) - 0.303*sin(q2 + q3)*cos(q5) - 1.5*sin(q2 + q3) + 1.25*cos(q2) - 0.054*cos(q2 + q3) + 0.75],
+                       [                                                                                                                                                           0,                                                                                                                                                             0,                                                                                        0,                                                                                                                                                                                                              1]])
+        #R0_2 = simplify(R0_1 * R1_2)
+        R0_2 = Matrix([[sin(q2)*cos(q1), cos(q1)*cos(q2), -sin(q1)],
+                       [sin(q1)*sin(q2), sin(q1)*cos(q2),  cos(q1)],
+                       [        cos(q2),        -sin(q2),        0]])
+        #R0_3 = simplify(R0_2 * R2_3)
+        R0_3 = Matrix([[sin(q2 + q3)*cos(q1), cos(q1)*cos(q2 + q3), -sin(q1)],
+                       [sin(q1)*sin(q2 + q3), sin(q1)*cos(q2 + q3),  cos(q1)],
+                       [        cos(q2 + q3),        -sin(q2 + q3),        0]])
         #R0_4 = simplify(R0_3 * R3_4)
         #R0_5 = simplify(R0_4 * R4_5)
         #R0_6 = simplify(R0_5 * R5_6)
@@ -114,22 +124,27 @@ def handle_calculate_IK(req):
 	    
             r, p, y = symbols('r p y')
 
-            R_z = Matrix([[ cos(y), -sin(y),   0],
-                          [ sin(y),  cos(y),   0],
-                          [      0,       0,   1]])
+            #R_z = Matrix([[ cos(y), -sin(y),   0],
+            #              [ sin(y),  cos(y),   0],
+            #              [      0,       0,   1]])
 
-            R_y = Matrix([[ cos(p),    0,   sin(p)],
-                          [      0,    1,        0],
-                          [-sin(p),    0,  cos(p)]])
+            #R_y = Matrix([[ cos(p),    0,   sin(p)],
+            #              [      0,    1,        0],
+            #              [-sin(p),    0,  cos(p)]])
 
-            R_x = Matrix([[ 1,         0,       0],
-                          [ 0,    cos(r), -sin(r)],
-                          [ 0,    sin(r),  cos(r)]])
+            #R_x = Matrix([[ 1,         0,       0],
+            #              [ 0,    cos(r), -sin(r)],
+            #              [ 0,    sin(r),  cos(r)]])
 
-            R_G = R_z * R_y * R_x
+            #R_G = R_z * R_y * R_x
+            R_G = Matrix([[cos(p)*cos(y), sin(p)*sin(r)*cos(y) - sin(y)*cos(r), sin(p)*cos(r)*cos(y) + sin(r)*sin(y)],
+                          [sin(y)*cos(p), sin(p)*sin(r)*sin(y) + cos(r)*cos(y), sin(p)*sin(y)*cos(r) - sin(r)*cos(y)],
+                          [      -sin(p),                        sin(r)*cos(p),                        cos(p)*cos(r)]])
             
-            R_corr = simplify(R_z.subs(y, pi) * R_y.subs(p,-pi/2))
-            ##T_total = simplify(T0_G * R_corr)
+            #R_corr = simplify(R_z.subs(y, pi) * R_y.subs(p,-pi/2))
+            R_corr = Matrix([[-6.12323399573677e-17, -1.22464679914735e-16,                   1.0],
+                             [ 7.49879891330929e-33,                  -1.0, -1.22464679914735e-16],
+                             [                  1.0,                     0,  6.12323399573677e-17]])
 
             R_G = R_G * R_corr
             R_G = R_G.subs({'r': roll, 'p': pitch, 'y': yaw})
