@@ -17,7 +17,7 @@
 
 [//]: # (Image References)
 
-[image1]: ./misc_images/misc1.png
+[image1]: ./writeup_images/FK_Diagram.jpeg
 [image2]: ./misc_images/misc3.png
 [image3]: ./misc_images/misc2.png
 
@@ -34,7 +34,7 @@ You're reading it!
 ### Kinematic Analysis
 #### 1. Run the forward_kinematics demo and evaluate the kr210.urdf.xacro file to perform kinematic analysis of Kuka KR210 robot and derive its DH parameters.
 
-Here is an example of how to include an image in your writeup.
+Calculations done on notebook according to the information learned during the course and the analysis of the kuka arm and its urdf file.
 
 ![alt text][image1]
 
@@ -42,14 +42,39 @@ Here is an example of how to include an image in your writeup.
 
 Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 --- | --- | --- | --- | ---
-0->1 | 0 | 0 | L1 | qi
-1->2 | - pi/2 | L2 | 0 | -pi/2 + q2
-2->3 | 0 | 0 | 0 | 0
-3->4 |  0 | 0 | 0 | 0
-4->5 | 0 | 0 | 0 | 0
-5->6 | 0 | 0 | 0 | 0
-6->EE | 0 | 0 | 0 | 0
+0->1 | 0 | 0 | 0.75 | 0
+1->2 | - pi/2 | 0.35 | 0 | q2 - pi/2
+2->3 | 0 | 1.25 | 0 | 0
+3->4 |  -pi/2 | -0.054 | 1.5 | 0
+4->5 | pi/2 | 0 | 0 | 0
+5->6 | -pi/2 | 0 | 0 | 0
+6->EE | 0 | 0 | 0.303 | 0
 
+Having found these DH parameters, the individual transformation matrices would have the following structure:
+
+ -| - | - | - 
+--- | --- | --- | ---
+cos(q)           | -sin(q)          | 0| a
+sin(q)*cos(alpha)| cos(q)*cos(alpha)| -sin(alpha)| -sin(alpha)*d
+sin(q)*sin(alpha)| cos(q)*sin(alpha)|  cos(alpha)|  cos(alpha)*d
+0|0              | 0                |1
+
+Then with this structure, I would substitute variables: q, alpha, d & a with the corresponding values for each matrix:
+
+'''
+	T0_1 = DH_T_Matrix(q1, alpha0, d1, a0).subs(s)
+    T1_2 = DH_T_Matrix(q2, alpha1, d2, a1).subs(s)
+    T2_3 = DH_T_Matrix(q3, alpha2, d3, a2).subs(s)
+    T3_4 = DH_T_Matrix(q4, alpha3, d4, a3).subs(s)
+    T4_5 = DH_T_Matrix(q5, alpha4, d5, a4).subs(s)
+    T5_6 = DH_T_Matrix(q6, alpha5, d6, a5).subs(s)
+    T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
+'''
+    being "s" the DH parameters dictionary
+
+    Then, in order to calculate the transform between base_link and gripper_link, I would calculate the product of all the previous matrices:
+
+    'T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)'
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
