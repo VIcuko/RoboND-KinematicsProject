@@ -18,8 +18,7 @@
 [//]: # (Image References)
 
 [image1]: ./writeup_images/FK_Diagram.jpeg
-[image2]: ./writeup_images/IK_Angles.jpeg
-[image3]: ./misc_images/misc2.png
+[image2]: ./writeup_images/IK_Angles.jpg
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -62,25 +61,26 @@ sin(q)*sin(alpha)| cos(q)*sin(alpha)|  cos(alpha)|  cos(alpha)*d
 Then with this structure, I would substitute variables: q, alpha, d & a with the corresponding values for each matrix:
 
 ```
-	T0_1 = DH_T_Matrix(q1, alpha0, d1, a0).subs(s)
-    T1_2 = DH_T_Matrix(q2, alpha1, d2, a1).subs(s)
-    T2_3 = DH_T_Matrix(q3, alpha2, d3, a2).subs(s)
-    T3_4 = DH_T_Matrix(q4, alpha3, d4, a3).subs(s)
-    T4_5 = DH_T_Matrix(q5, alpha4, d5, a4).subs(s)
-    T5_6 = DH_T_Matrix(q6, alpha5, d6, a5).subs(s)
-    T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
+T0_1 = DH_T_Matrix(q1, alpha0, d1, a0).subs(s)
+T1_2 = DH_T_Matrix(q2, alpha1, d2, a1).subs(s)
+T2_3 = DH_T_Matrix(q3, alpha2, d3, a2).subs(s)
+T3_4 = DH_T_Matrix(q4, alpha3, d4, a3).subs(s)
+T4_5 = DH_T_Matrix(q5, alpha4, d5, a4).subs(s)
+T5_6 = DH_T_Matrix(q6, alpha5, d6, a5).subs(s)
+T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
 ```
-    being "s" the DH parameters dictionary
 
-    Then, in order to calculate the transform between base_link and gripper_link, I would calculate the product of all the previous matrices:
+being "s" the DH parameters dictionary
 
-    `T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)`
+Then, in order to calculate the transform between base_link and gripper_link, I would calculate the product of all the previous matrices:
+
+`T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)`
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
 Theta 1 may be easily calculated as the angle between the plane win which the arm is moving and the x axis on the real world plane. Meaning that the equation for theta 1 would be something like the following:
 
-theta 1 = atan2(y, x)
+`theta 1 = atan2(y, x)`
 
 Regarding theta 2 and theta 3, the calculations would be carried out according to the following image:
 
