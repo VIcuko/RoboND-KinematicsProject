@@ -157,7 +157,8 @@ def handle_calculate_IK(req):
     	    
             theta1 = atan2(Wpos[1],Wpos[0])
     	    
-            #Triangle for theta2 and 3
+            # Triangle for theta2 and 3. Check writeup image and explanation for further detail
+            # in understanding the next calculations.
             side_a = 1.5
             side_b = sqrt(pow((sqrt(Wpos[0]*Wpos[0] + Wpos[1]*Wpos[1]) - 0.35),2) + pow((Wpos[2] - 0.75),2))
             side_c = 1.25

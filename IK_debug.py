@@ -210,7 +210,7 @@ def test_code(test_case):
 
         #Now we calculate the rotation matrix from link 3 to 6 (using LU decomposition)
 
-        R3_6 = simplify (R0_3.inv("LU") * R_G)
+        R3_6 = R0_3.transpose() * R_G
 
         #Now we can calculate the remaining thetas:
 
