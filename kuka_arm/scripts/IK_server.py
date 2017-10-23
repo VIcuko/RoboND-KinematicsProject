@@ -90,9 +90,9 @@ def handle_calculate_IK(req):
                        [                                                                                                                                                           0,                                                                                                                                                             0,                                                                                        0,                                                                                                                                                                                                              1]])
         #R0_2 = simplify(R0_1 * R1_2)
         #R0_3 = simplify(R0_2 * R2_3)
-        R0_3 = Matrix([[sin(q2 + q3)*cos(q1), cos(q1)*cos(q2 + q3), -sin(q1)],
-                       [sin(q1)*sin(q2 + q3), sin(q1)*cos(q2 + q3),  cos(q1)],
-                       [        cos(q2 + q3),        -sin(q2 + q3),        0]])
+        #R0_3 = Matrix([[sin(q2 + q3)*cos(q1), cos(q1)*cos(q2 + q3), -sin(q1)],
+        #               [sin(q1)*sin(q2 + q3), sin(q1)*cos(q2 + q3),  cos(q1)],
+        #               [        cos(q2 + q3),        -sin(q2 + q3),        0]])
         #R0_4 = simplify(R0_3 * R3_4)
         #R0_5 = simplify(R0_4 * R4_5)
         #R0_6 = simplify(R0_5 * R5_6)
@@ -117,7 +117,7 @@ def handle_calculate_IK(req):
                     req.poses[x].orientation.z, req.poses[x].orientation.w])
      
             ### Your IK code here 
-	    # Compensate for rotation discrepancy between DH parameters and Gazebo
+	        # Compensate for rotation discrepancy between DH parameters and Gazebo
 	    
             r, p, y = symbols('r p y')
 
@@ -159,7 +159,7 @@ def handle_calculate_IK(req):
     	    
             # Triangle for theta2 and 3. Check writeup image and explanation for further detail
             # in understanding the next calculations.
-            side_a = 1.5
+            side_a = 1.501
             side_b = sqrt(pow((sqrt(Wpos[0]*Wpos[0] + Wpos[1]*Wpos[1]) - 0.35),2) + pow((Wpos[2] - 0.75),2))
             side_c = 1.25
             
@@ -172,6 +172,10 @@ def handle_calculate_IK(req):
 
             #Now we use the extracted rotation matrix from link 0 to 3:
             #And introduce the angle values
+            R0_3 = Matrix([[sin(q2 + q3)*cos(q1), cos(q1)*cos(q2 + q3), -sin(q1)],
+                       [sin(q1)*sin(q2 + q3), sin(q1)*cos(q2 + q3),  cos(q1)],
+                       [        cos(q2 + q3),        -sin(q2 + q3),        0]])
+
             R0_3 = R0_3.evalf(subs={q1:theta1, q2:theta2, q3:theta3})
 
             #Now we calculate the rotation matrix from link 3 to 6 (using LU decomposition)
