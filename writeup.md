@@ -18,8 +18,7 @@
 [//]: # (Image References)
 
 [image1]: ./writeup_images/FK_Diagram.jpeg
-[image2]: ./writeup_images/IK_Angles.jpeg
-[image3]: ./misc_images/misc2.png
+[image2]: ./writeup_images/IK_Angles.jpg
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
