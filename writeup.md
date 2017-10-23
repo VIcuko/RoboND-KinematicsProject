@@ -71,17 +71,17 @@ T5_6 = DH_T_Matrix(q6, alpha5, d6, a5).subs(s)
 T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
 ```
 
-    being "s" the DH parameters dictionary
+being "s" the DH parameters dictionary
 
-    Then, in order to calculate the transform between base_link and gripper_link, I would calculate the product of all the previous matrices:
+Then, in order to calculate the transform between base_link and gripper_link, I would calculate the product of all the previous matrices:
 
-    `T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)`
+`T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)`
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
 Theta 1 may be easily calculated as the angle between the plane win which the arm is moving and the x axis on the real world plane. Meaning that the equation for theta 1 would be something like the following:
 
-theta 1 = atan2(y, x)
+`theta 1 = atan2(y, x)`
 
 Regarding theta 2 and theta 3, the calculations would be carried out according to the following image:
 
