@@ -50,6 +50,13 @@ Links | alpha(i-1) | a(i-1) | d(i-1) | theta(i)
 5->6 | -pi/2 | 0 | 0 | 0
 6->EE | 0 | 0 | 0.303 | 0
 
+Having found these DH parameters, the individual transformation matrices would have the following structure:
+
+
+cos(q)           | -sin(q)          | 0| a
+sin(q)*cos(alpha)| cos(q)*cos(alpha)| -sin(alpha)| -sin(alpha)*d
+sin(q)*sin(alpha)| cos(q)*sin(alpha)|  cos(alpha)|  cos(alpha)*d
+0|0              | 0                |1
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
