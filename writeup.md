@@ -18,7 +18,7 @@
 [//]: # (Image References)
 
 [image1]: ./writeup_images/FK_Diagram.jpeg
-[image2]: ./misc_images/misc3.png
+[image2]: ./writeup_images/IK_Angles.jpeg
 [image3]: ./misc_images/misc2.png
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
@@ -61,7 +61,7 @@ sin(q)*sin(alpha)| cos(q)*sin(alpha)|  cos(alpha)|  cos(alpha)*d
 
 Then with this structure, I would substitute variables: q, alpha, d & a with the corresponding values for each matrix:
 
-'''
+```
 	T0_1 = DH_T_Matrix(q1, alpha0, d1, a0).subs(s)
     T1_2 = DH_T_Matrix(q2, alpha1, d2, a1).subs(s)
     T2_3 = DH_T_Matrix(q3, alpha2, d3, a2).subs(s)
@@ -69,28 +69,48 @@ Then with this structure, I would substitute variables: q, alpha, d & a with the
     T4_5 = DH_T_Matrix(q5, alpha4, d5, a4).subs(s)
     T5_6 = DH_T_Matrix(q6, alpha5, d6, a5).subs(s)
     T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
-'''
+```
     being "s" the DH parameters dictionary
 
     Then, in order to calculate the transform between base_link and gripper_link, I would calculate the product of all the previous matrices:
 
-    'T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)'
+    `T0_G = simplify(T0_1*T1_2*T2_3*T3_4*T4_5*T5_6*T6_G)`
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
-And here's where you can draw out and show your math for the derivation of your theta angles. 
+Theta 1 may be easily calculated as the angle between the plane win which the arm is moving and the x axis on the real world plane. Meaning that the equation for theta 1 would be something like the following:
+
+theta 1 = atan2(y, x)
+
+Regarding theta 2 and theta 3, the calculations would be carried out according to the following image:
 
 ![alt text][image2]
+
+Where the y axis would correspond to the z axis in the "real world coordinates", being the resulting equations the following:
+
+```
+theta2 = pi/2 - angle_a - atan2(Wpos[2] - 0.75, sqrt(Wpos[0]*Wpos[0] + Wpos[1]*Wpos[1]) - 0.35)
+theta3 = pi/2 - (angle_b + 0.036)
+```
+
+where Wpos is the position of the wrist center. Being 0,1 and 2, its coordinates for x,y,x respectively.
+
+Regarding theta 4, 5 & 6, given they are all centerd on the wrist center in the same point, their values are the corresponding ones to the rotation of each plane, being the resulting equations the following:
+
+```
+theta4 = atan2(R3_6[2,2], -R3_6[0,2])
+theta5 = atan2(sqrt(R3_6[0,2]*R3_6[0,2] + R3_6[2,2]*R3_6[2,2]),R3_6[1,2])
+theta6 = atan2(-R3_6[1,1], R3_6[1,0])
+```
+
+Where R3_6 is the rotation matrix from joint 3 to joint 6.
 
 ### Project Implementation
 
 #### 1. Fill in the `IK_server.py` file with properly commented python code for calculating Inverse Kinematics based on previously performed Kinematic Analysis. Your code must guide the robot to successfully complete 8/10 pick and place cycles. Briefly discuss the code you implemented and your results. 
 
+In the code, you may first find the calculation for the forward kinematics according to the DH parameters specified earlier in this document. Afterwards, I've carried out the calculations for the Inverse kinematics from the given end effector (wrist center) point from the simulator. With this position, the program calculates the corresponding angles for the robotic arm to reach the exact indicated position. 
 
-Here I'll talk about the code, what techniques I used, what worked and why, where the implementation might fail and how I might improve it if I were going to pursue this project further.  
-
-
-And just for fun, another example image:
-![alt text][image3]
+In order to improve the program runtime, I have directly introduced the resulting matrices for each step, instead of making the program carry out all matrices operations, since this took too much time (up to half a minute). In any case, the operations being carried out may be found commented right before the matrix in the code.
 
 
