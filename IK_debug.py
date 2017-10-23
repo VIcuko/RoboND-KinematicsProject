@@ -174,7 +174,7 @@ def test_code(test_case):
                       [sin(y)*cos(p), sin(p)*sin(r)*sin(y) + cos(r)*cos(y), sin(p)*sin(y)*cos(r) - sin(r)*cos(y)],
                       [      -sin(p),                        sin(r)*cos(p),                        cos(p)*cos(r)]])
         
-        #R_corr = simplify(R_z.subs(y, pi) * R_y.subs(p, -pi/2)
+        #R_corr = simplify(R_z.subs(y, pi) * R_y.subs(p, -pi/2))
         R_corr = Matrix([[-6.12323399573677e-17, -1.22464679914735e-16,                   1.0],
                          [ 7.49879891330929e-33,                  -1.0, -1.22464679914735e-16],
                          [                  1.0,                     0,  6.12323399573677e-17]])
