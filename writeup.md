@@ -62,14 +62,15 @@ sin(q)*sin(alpha)| cos(q)*sin(alpha)|  cos(alpha)|  cos(alpha)*d
 Then with this structure, I would substitute variables: q, alpha, d & a with the corresponding values for each matrix:
 
 ```
-	T0_1 = DH_T_Matrix(q1, alpha0, d1, a0).subs(s)
-    T1_2 = DH_T_Matrix(q2, alpha1, d2, a1).subs(s)
-    T2_3 = DH_T_Matrix(q3, alpha2, d3, a2).subs(s)
-    T3_4 = DH_T_Matrix(q4, alpha3, d4, a3).subs(s)
-    T4_5 = DH_T_Matrix(q5, alpha4, d5, a4).subs(s)
-    T5_6 = DH_T_Matrix(q6, alpha5, d6, a5).subs(s)
-    T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
+T0_1 = DH_T_Matrix(q1, alpha0, d1, a0).subs(s)
+T1_2 = DH_T_Matrix(q2, alpha1, d2, a1).subs(s)
+T2_3 = DH_T_Matrix(q3, alpha2, d3, a2).subs(s)
+T3_4 = DH_T_Matrix(q4, alpha3, d4, a3).subs(s)
+T4_5 = DH_T_Matrix(q5, alpha4, d5, a4).subs(s)
+T5_6 = DH_T_Matrix(q6, alpha5, d6, a5).subs(s)
+T6_G = DH_T_Matrix(q7, alpha6, d7, a6).subs(s)
 ```
+
     being "s" the DH parameters dictionary
 
     Then, in order to calculate the transform between base_link and gripper_link, I would calculate the product of all the previous matrices:
