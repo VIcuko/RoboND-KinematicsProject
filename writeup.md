@@ -19,8 +19,12 @@
 
 [image1]: ./writeup_images/FK_Diagram.jpeg
 [image2]: ./writeup_images/IK_Angles.jpg
-[image3]: ./writeup_images/8_cylinders.jpg
-[image4]: ./writeup_images/9_cylinders.jpg
+[image3]: ./writeup_images/Euler1.png
+[image4]: ./writeup_images/Euler2.png
+[image5]: ./writeup_images/Euler3.gif
+[image6]: ./writeup_images/Euler4.gif
+[image7]: ./writeup_images/8_cylinders.jpg
+[image8]: ./writeup_images/9_cylinders.jpg
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -95,9 +99,28 @@ theta2 = pi/2 - angle_a - atan2(Wpos[2] - 0.75, sqrt(Wpos[0]*Wpos[0] + Wpos[1]*W
 theta3 = pi/2 - (angle_b + 0.036)
 ```
 
-where Wpos is the position of the wrist center. Being 0,1 and 2, its coordinates for x,y,x respectively.
+where Wpos is the position of the wrist center. Being 0,1 and 2, its coordinates for x,y,z respectively.
 
-Regarding theta 4, 5 & 6, given they are all centerd on the wrist center in the same point, their values are the corresponding ones to the rotation of each plane, being the resulting equations the following:
+Regarding theta 4, 5 & 6, given they are all centerd on the wrist center in the same point, their values are the corresponding ones to the rotation of each plane, being the resulting equations the following from the extraction of Euler angles from the rotation matrix as indicated in the following calculations obtained from lesson 2.8 "Euler Angles from a Rotation Matrix":
+
+Given the following example rotation matrix:
+
+![alt text][image3]
+
+the goal would be to find the angles alpha, beta, and gamma, given that numerical values for r​ij are known, leading to the following equations:
+
+![alt text][image4]
+![alt text][image5]
+![alt text][image6]
+
+In the specific case of the kuka arm, the rotation matrix would be:
+
+```
+[ [sin(q2 + q3)*cos(q1), sin(q1)*sin(q2 + q3), cos(q2 + q3)], 
+ [cos(q1)*cos(q2 + q3), sin(q1)*cos(q2 + q3), -sin(q2 + q3)], 
+ [-sin(q1), cos(q1), 0]]
+```
+Multiplied by the correction matrix. Solving theta4, 5 & 6 would result in the following equations:
 
 ```
 theta4 = atan2(R3_6[2,2], -R3_6[0,2])
@@ -121,6 +144,6 @@ After having solved this, the robot arm always releases the cylinders in the exa
 
 After having said all this, the result was very satisfactory, although I have the feeling I might be able to improve processing speed in order for the calculations and movement to be carried out faster. The final results can be seen in the following images with 8 and 9 cylinders in the bin.
 
-![alt text][image3]
-![alt text][image4]
+![alt text][image7]
+![alt text][image8]
 
