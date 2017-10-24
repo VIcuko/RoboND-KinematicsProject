@@ -115,7 +115,7 @@ Continuing with this logic along the rest of the diagram:
     `<joint name="gripper_joint" type="fixed">
     <parent link="link_6"/>
     <child link="gripper_link"/>
-    <origin xyz="0.11 0 0" rpy="0 0 0"/>`
+    <origin xyz="0.11 0 0" rpy="0 0 0"/>
 **Resulting in 0.303**
 
 · theta 2 corresponds to a turn of -90º from x1 axis to x2 axis as shown in the diagram.
