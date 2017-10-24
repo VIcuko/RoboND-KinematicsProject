@@ -110,17 +110,21 @@ Given the following example rotation matrix:
 the goal would be to find the angles alpha, beta, and gamma, given that numerical values for r​ij are known, leading to the following equations:
 
 ![alt text][image4]
+
 ![alt text][image5]
+
 ![alt text][image6]
 
 In the specific case of the kuka arm, the rotation matrix would be:
 
 ```
-[ [sin(q2 + q3)*cos(q1), sin(q1)*sin(q2 + q3), cos(q2 + q3)], 
- [cos(q1)*cos(q2 + q3), sin(q1)*cos(q2 + q3), -sin(q2 + q3)], 
- [-sin(q1), cos(q1), 0]]
+[[-sin(p)*cos(q2 + q3) + sin(q2 + q3)*cos(p)*cos(q1 - y), sin(p)*sin(r)*sin(q2 + q3)*cos(q1 - y) + sin(r)*cos(p)*cos(q2 + q3) + sin(q1 - y)*sin(q2 + q3)*cos(r), sin(p)*sin(q2 + q3)*cos(r)*cos(q1 - y) - sin(r)*sin(q1 - y)*sin(q2 + q3) + cos(p)*cos(r)*cos(q2 + q3)],
+[ sin(p)*sin(q2 + q3) + cos(p)*cos(q1 - y)*cos(q2 + q3), sin(p)*sin(r)*cos(q1 - y)*cos(q2 + q3) - sin(r)*sin(q2 + q3)*cos(p) + sin(q1 - y)*cos(r)*cos(q2 + q3), sin(p)*cos(r)*cos(q1 - y)*cos(q2 + q3) - sin(r)*sin(q1 - y)*cos(q2 + q3) - sin(q2 + q3)*cos(p)*cos(r)],
+[                                   -sin(q1 - y)*cos(p),                                                       -sin(p)*sin(r)*sin(q1 - y) + cos(r)*cos(q1 - y),                                                       -sin(p)*sin(q1 - y)*cos(r) - sin(r)*cos(q1 - y)]]
 ```
-Multiplied by the correction matrix. Solving theta4, 5 & 6 would result in the following equations:
+(Multiplied by the correction matrix).
+
+Solving the angles would result in the following equations:
 
 ```
 theta4 = atan2(R3_6[2,2], -R3_6[0,2])
@@ -128,7 +132,7 @@ theta5 = atan2(sqrt(R3_6[0,2]*R3_6[0,2] + R3_6[2,2]*R3_6[2,2]),R3_6[1,2])
 theta6 = atan2(-R3_6[1,1], R3_6[1,0])
 ```
 
-Where R3_6 is the rotation matrix from joint 3 to joint 6.
+Where R3_6 is the rotation matrix from joint 3 to joint 6 (previously indicated)
 
 ### Project Implementation
 
