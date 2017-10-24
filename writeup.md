@@ -76,46 +76,46 @@ Continuing with this logic along the rest of the diagram:
 · a1, a2 & a3 correspond to the segments drawn in the diagram:
 	
 + a1 is the distance along x axis from joint 1 to joint 2 indicated in the urdf file:
-	<joint name="joint_2" type="revolute">
-    <origin xyz="0.35 0 0.42" rpy="0 0 0"/>
+	`<joint name="joint_2" type="revolute">
+    <origin xyz="0.35 0 0.42" rpy="0 0 0"/>`
 **0.35**
 
 + a2 is the distance from joint 2 to joint 3 along the z axis. Since the urdf file measurements are defined in relation to the previous joint, it is very straightforward:
-	<joint name="joint_3" type="revolute">
-    <origin xyz="0 0 1.25" rpy="0 0 0"/> 
+	`<joint name="joint_3" type="revolute">
+    <origin xyz="0 0 1.25" rpy="0 0 0"/>`
 **1.25**
 
 + a3 is the distance along the z axis 
-    <joint name="joint_4" type="revolute">
-    <origin xyz="0.96 0 -0.054" rpy="0 0 0"/>
+    `<joint name="joint_4" type="revolute">
+    <origin xyz="0.96 0 -0.054" rpy="0 0 0"/>`
 **-0.054**
 
 · d1, d4 & dg correspond to the segments drawn in the diagram:
 
 + d1 is the distance from joint 0 to joint 2 along the z axis, therefore we have to add the distance along z from joint 0 to 1 and from 1 to 2:
-	<joint name="joint_1" type="revolute">
-    <origin xyz="0 0 0.33" rpy="0 0 0"/>
+	`<joint name="joint_1" type="revolute">
+    <origin xyz="0 0 0.33" rpy="0 0 0"/>`
 &
-    <joint name="joint_2" type="revolute">
-    <origin xyz="0.35 0 0.42" rpy="0 0 0"/>
+    `<joint name="joint_2" type="revolute">
+    <origin xyz="0.35 0 0.42" rpy="0 0 0"/>`
 **Resulting in 0.75**
 
 + d4 is the distance from joint 3 to joint 5 along the x axis:
-    <joint name="joint_4" type="revolute">
-    <origin xyz="0.96 0 -0.054" rpy="0 0 0"/>
+    `<joint name="joint_4" type="revolute">
+    <origin xyz="0.96 0 -0.054" rpy="0 0 0"/>`
 &
-    <joint name="joint_5" type="revolute">
-    <origin xyz="0.54 0 0" rpy="0 0 0"/>
+    `<joint name="joint_5" type="revolute">
+    <origin xyz="0.54 0 0" rpy="0 0 0"/>`
 **Resulting in 1.5**
 
 + dg is the distance from joint 5 to the end effector along the x axis:
-    <joint name="joint_6" type="revolute">
-    <origin xyz="0.193 0 0" rpy="0 0 0"/>
+    `<joint name="joint_6" type="revolute">
+    <origin xyz="0.193 0 0" rpy="0 0 0"/>`
 &
-    <joint name="gripper_joint" type="fixed">
+    `<joint name="gripper_joint" type="fixed">
     <parent link="link_6"/>
     <child link="gripper_link"/>
-    <origin xyz="0.11 0 0" rpy="0 0 0"/>
+    <origin xyz="0.11 0 0" rpy="0 0 0"/>`
 **Resulting in 0.303**
 
 · theta 2 corresponds to a turn of -90º from x1 axis to x2 axis as shown in the diagram.
