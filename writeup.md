@@ -19,6 +19,8 @@
 
 [image1]: ./writeup_images/FK_Diagram.jpeg
 [image2]: ./writeup_images/IK_Angles.jpg
+[image3]: ./writeup_images/8_cylinders.jpg
+[image4]: ./writeup_images/9_cylinders.jpg
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -109,8 +111,16 @@ Where R3_6 is the rotation matrix from joint 3 to joint 6.
 
 #### 1. Fill in the `IK_server.py` file with properly commented python code for calculating Inverse Kinematics based on previously performed Kinematic Analysis. Your code must guide the robot to successfully complete 8/10 pick and place cycles. Briefly discuss the code you implemented and your results. 
 
-In the code, you may first find the calculation for the forward kinematics according to the DH parameters specified earlier in this document. Afterwards, I've carried out the calculations for the Inverse kinematics from the given end effector (wrist center) point from the simulator. With this position, the program calculates the corresponding angles for the robotic arm to reach the exact indicated position. 
+In the code, you may first find the calculation for the forward kinematics according to the DH parameters specified earlier in this document. Afterwards, I've carried out the calculations for the Inverse kinematics from the given end effector (wrist center) point from the simulator. With this position, the program calculates the corresponding angles for the robotic arm to reach the exact indicated position.
 
-In order to improve the program runtime, I have directly introduced the resulting matrices for each step, instead of making the program carry out all matrices operations, since this took too much time (up to half a minute). In any case, the operations being carried out may be found commented right before the matrix in the code.
+In order to improve the program runtime, I have directly introduced the resulting matrices for each step, instead of making the program carry out all matrices operations, since this took too much time (up to half a minute). In any case, the operations being carried out may be found commented right before the matrix in the code. Regarding the calculations for theta 2 and 3, they were carried out as specified before.
 
+At first I had some issues with the angle at which the Kuka was leaving the cylinders, since it had a 90º deviation, meaning it always released the cylinders right next to the bin at a 90º movement in theta 5 until I realised that I had left out of the loop the rotation matrix from joint 0 to 3 (R0_3) and therefore was only initialized once per run and affecting the calculation of thetas 4 through 6 giving that 90º deviation.
+
+After having solved this, the robot arm always releases the cylinders in the exact same spot at the middel of the bin. The only issue that could lead to some error is the angle of the grip at the moment of grasping the object, since it sometimes pushes it before grabbing it and then it doesn't pick it up. Also I had to increase the gripping time in order for the arm to grab the object in continuous mode instead of step by step.
+
+After having said all this, the result was very satisfactory, although I have the feeling I might be able to improve processing speed in order for the calculations and movement to be carried out faster. The final results can be seen in the following images with 8 and 9 cylinders in the bin.
+
+![alt text][image3]
+![alt text][image4]
 
